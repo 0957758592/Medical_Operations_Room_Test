@@ -49,5 +49,5 @@ function getRandomDelay() {
 }
 
 function getRandomDelayEmit() {
-  return Math.random() * 1500 + 100;
+  return Math.random() * 1100 + 100;
 }

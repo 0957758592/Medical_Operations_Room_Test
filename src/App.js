@@ -14,11 +14,6 @@ function App() {
     if (!tempData.data) {
       return;
     }
-
-    console.log(
-      "temp",
-      tempData.time.getTime() - timeTemperature.current.getTime()
-    );
     if (tempData.time.getTime() - timeTemperature.current.getTime() > 1000) {
       setTemperature("N/A");
     } else {
@@ -32,7 +27,6 @@ function App() {
     if (!airData.data) {
       return;
     }
-    console.log("air", airData.time.getTime() - timeAir.current.getTime() > 1000)
     if (airData.time.getTime() - timeAir.current.getTime() > 1000) {
       setAir("N/A");
     } else {
@@ -54,19 +48,11 @@ function App() {
   };
   useEffect(() => {
     event.on("temperature", getTemperature);
-    return () => {
-      event.removeEventListener("temperature", getTemperature);
-    };
-  }, []);
-  useEffect(() => {
     event.on("air", getAir);
-    return () => {
-      event.on("air", getAir);
-    };
-  }, []);
-  useEffect(() => {
     event.on("humidity", getHumidity);
     return () => {
+      event.removeEventListener("temperature", getTemperature);
+      event.on("air", getAir);
       event.on("humidity", getHumidity);
     };
   }, []);
