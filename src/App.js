@@ -11,7 +11,7 @@ function App() {
   const timeHumidity = useRef(new Date());
   const getTemperature = data => {
     const tempData = data.getValue();
-    if (!tempData.data) {
+    if ((tempData && !tempData.data) || !tempData) {
       return;
     }
     if (tempData.time.getTime() - timeTemperature.current.getTime() > 1000) {
@@ -24,7 +24,7 @@ function App() {
 
   const getAir = data => {
     const airData = data.getValue();
-    if (!airData.data) {
+    if ((airData && !airData.data) || !airData) {
       return;
     }
     if (airData.time.getTime() - timeAir.current.getTime() > 1000) {
@@ -36,7 +36,7 @@ function App() {
   };
   const getHumidity = data => {
     const humidityData = data.getValue();
-    if (!humidityData.data) {
+    if ((humidityData && !humidityData.data) || !humidityData) {
       return;
     }
     if (humidityData.time.getTime() - timeHumidity.current.getTime() > 1000) {
@@ -57,12 +57,14 @@ function App() {
     };
   }, []);
   return (
-    <div className="flex justify-around bg-gray-200">
-      <div>My scoreboard</div>
-      <Scoreboard type="Temperature" value={temperature} />
-      <Scoreboard type="Air" value={air} />
-      <Scoreboard type="Humidity" value={humidity} />
-    </div>
+    <React.Fragment>
+      <div className="text-center m-3 font-bold text-xl">My scoreboard</div>
+      <div className="flex justify-around bg-gray-200">
+        <Scoreboard type="Temperature" value={temperature} />
+        <Scoreboard type="Air" value={air} />
+        <Scoreboard type="Humidity" value={humidity} />
+      </div>
+    </React.Fragment>
   );
 }
 
