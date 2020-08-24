@@ -58,6 +58,7 @@ function App() {
   }, []);
   return (
     <div className="flex justify-around bg-gray-200">
+      <div>My scoreboard</div>
       <Scoreboard type="Temperature" value={temperature} />
       <Scoreboard type="Air" value={air} />
       <Scoreboard type="Humidity" value={humidity} />
