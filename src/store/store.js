@@ -1,5 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import AppEvent from "../utils";
+import { constants } from "../utils/constants"
 
 export const randomTemperature = new BehaviorSubject();
 export const randomAir = new BehaviorSubject();
@@ -15,13 +16,13 @@ setInterval(() => randomAir.next(getRandomAir()), getRandomDelay());
 setInterval(() => randomHumidity.next(getRandomHumidity()), getRandomDelay());
 
 setInterval(
-  () => event.emit("temperature", randomTemperature),
+  () => event.emit(constants.temperature, randomTemperature),
   getRandomDelayEmit()
 );
 
-setInterval(() => event.emit("air", randomAir), getRandomDelayEmit());
+setInterval(() => event.emit(constants.air, randomAir), getRandomDelayEmit());
 
-setInterval(() => event.emit("humidity", randomHumidity), getRandomDelayEmit());
+setInterval(() => event.emit(constants.humidity, randomHumidity), getRandomDelayEmit());
 
 function getRandomTemperature() {
   if (Math.random() > 0.3) {
