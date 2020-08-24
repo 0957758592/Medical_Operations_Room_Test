@@ -1,2 +1,2 @@
-import {  randomTemperature, randomAir, randomHumidity } from "./store";
-export {  randomTemperature, randomAir, randomHumidity };
+import {  randomTemperature, randomAir, randomHumidity, event } from "./store";
+export {  randomTemperature, randomAir, randomHumidity, event };

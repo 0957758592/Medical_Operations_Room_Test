@@ -1,12 +1,75 @@
-import React from "react";
-import { useStore } from "./hooks";
-import { randomTemperature, randomAir, randomHumidity } from "./store";
+import React, { useEffect, useState, useRef } from "react";
+import { event } from "./store";
 import Scoreboard from "./components/Scoreboard";
 
 function App() {
-  const temperature = useStore(randomTemperature);
-  const air = useStore(randomAir);
-  const humidity = useStore(randomHumidity);
+  const [temperature, setTemperature] = useState("");
+  const timeTemperature = useRef(new Date());
+  const [air, setAir] = useState("");
+  const timeAir = useRef(new Date());
+  const [humidity, setHumidity] = useState("");
+  const timeHumidity = useRef(new Date());
+  const getTemperature = data => {
+    const tempData = data.getValue();
+    if (!tempData.data) {
+      return;
+    }
+
+    console.log(
+      "temp",
+      tempData.time.getTime() - timeTemperature.current.getTime()
+    );
+    if (tempData.time.getTime() - timeTemperature.current.getTime() > 1000) {
+      setTemperature("N/A");
+    } else {
+      setTemperature(tempData.data);
+    }
+    timeTemperature.current = tempData.time;
+  };
+
+  const getAir = data => {
+    const airData = data.getValue();
+    if (!airData.data) {
+      return;
+    }
+    console.log("air", airData.time.getTime() - timeAir.current.getTime() > 1000)
+    if (airData.time.getTime() - timeAir.current.getTime() > 1000) {
+      setAir("N/A");
+    } else {
+      setAir(airData.data);
+    }
+    timeAir.current = airData.time;
+  };
+  const getHumidity = data => {
+    const humidityData = data.getValue();
+    if (!humidityData.data) {
+      return;
+    }
+    if (humidityData.time.getTime() - timeHumidity.current.getTime() > 1000) {
+      setHumidity("N/A");
+    } else {
+      setHumidity(humidityData.data);
+    }
+    timeHumidity.current = humidityData.time;
+  };
+  useEffect(() => {
+    event.on("temperature", getTemperature);
+    return () => {
+      event.removeEventListener("temperature", getTemperature);
+    };
+  }, []);
+  useEffect(() => {
+    event.on("air", getAir);
+    return () => {
+      event.on("air", getAir);
+    };
+  }, []);
+  useEffect(() => {
+    event.on("humidity", getHumidity);
+    return () => {
+      event.on("humidity", getHumidity);
+    };
+  }, []);
   return (
     <div className="flex justify-around bg-gray-200">
       <Scoreboard type="Temperature" value={temperature} />
